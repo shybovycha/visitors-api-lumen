@@ -2,10 +2,9 @@
 namespace App\MyStats;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class Visitor extends Model {
-    protected $fillable = [ 'ip', 'visits' ];
+    protected $fillable = [ 'ip', 'visits', 'location_id' ];
 
     public function location() {
         return $this->belongsTo('App\MyStats\Location');
@@ -15,7 +14,7 @@ class Visitor extends Model {
         $location = self::getLocation($ip);
         $visitor = self::getVisitor($ip);
 
-        if (!$visitor->location()) {
+        if (!$visitor->location_id) {
             $visitor->location()->associate($location);
             $visitor->save();
         }
